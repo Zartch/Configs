@@ -1,8 +1,28 @@
     
     ## One Dev Machine on Ubuntu
        
-    apt install net-tools terminator git make npm golang-go go-bindata docker docker-compose curl
-    apt install make npm 
+    apt install net-tools vim terminator git curl
+    apt install python3-pip
+    
+    pip install virtualenv virtualenvwrapper
+    #configure virtualenv
+        mkdir ~/.virtualenvs
+        virtualenv -p /usr/bin/python3.8 venv
+            # vim .bashrc
+            + #virtualenvwrapper
+            + export WORKON_HOME=$HOME/.virtualenvs
+            + export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.6
+            + export PROJECT_HOME=$HOME/unnaxdev
+            + source /usr/local/bin/virtualenvwrapper.sh
+
+    
+    apt install golang-go go-bindata 
+    apt install docker docker-compose #https://docs.docker.com/engine/install/linux-postinstall/
+    apt install make npm
+
+    sudo apt-get install mysql-client mysql-server 
+    #https://phoenixnap.com/kb/how-to-install-postgresql-on-ubuntu
+    
       
     snap install pycharm-community --classic
     snap install code --classic
@@ -74,3 +94,14 @@
           git commit -am "Esto es una prueba" 
 
     ------------------------------------------------------------------------
+    
+    
+    
+    
+    #DOKER COMMANDS 
+
+    #stop all
+    docker stop $(docker ps -aq)
+    #burn all
+    docker container prune ---¿?--- docker rm $(docker ps -aq)
+
