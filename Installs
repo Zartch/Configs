@@ -1,7 +1,7 @@
     
     ## One Dev Machine on Ubuntu
        
-    apt install net-tools vim terminator git curl htop
+    apt install net-tools vim git curl htop terminator
     apt install python3-pip
     
     pip install virtualenv virtualenvwrapper
