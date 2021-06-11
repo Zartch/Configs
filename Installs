@@ -100,8 +100,13 @@
     
     #DOKER COMMANDS 
 
-    #stop all
+    # stop all
     docker stop $(docker ps -aq)
-    #burn all
+    # burn all
     docker container prune ---¿?--- docker rm $(docker ps -aq)
+    # logs
+    docker logs --follow container_name
+    docker logs --tail 10 container_name
+    # enter
+    docker exec -it container_name /bin/bash
 
