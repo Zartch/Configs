@@ -1,0 +1,47 @@
+# ============================================
+# PROMPT BASH: git branch + status + virtualenv 
+# ============================================
+
+# Función para mostrar información de Git con indicadores de estado
+parse_git_branch() {
+  # Obtener la rama actual de git (si estamos en un repo)
+  local branch=$(git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+
+  # Si estamos en un repositorio git
+  if [ -n "$branch" ]; then
+    local status=""
+
+    # Verificar si hay cambios sin commit (archivos modificados, nuevos, etc.)
+    # Si git status devuelve algo, significa que hay cambios pendientes
+    if [ -n "$(git status --porcelain 2>/dev/null | grep -v '^??')" ]; then
+      status="*"  # Añadir asterisco para indicar cambios pendientes
+    fi
+
+    # Verificar si hay commits locales sin push al remoto
+    # Cuenta cuántos commits hay en local que no están en el remoto
+    local unpushed=$(git log @{u}.. 2>/dev/null | wc -l)
+    if [ "$unpushed" -gt 0 ]; then
+      status="${status}↑${unpushed}"  # Añadir flecha con número de commits sin push
+    fi
+
+    # Devolver la rama con sus indicadores entre paréntesis
+    echo " ($branch$status)"
+  fi
+}
+
+# Función para mostrar el entorno virtual de Python activo
+parse_virtualenv() {
+  # Si hay un entorno virtual activado (variable VIRTUAL_ENV existe)
+  if [ -n "$VIRTUAL_ENV" ]; then
+    # Mostrar el nombre del entorno con los espacios de separación incluidos
+    echo "[$(basename $VIRTUAL_ENV)]  "
+  fi
+}
+# Configuración del PS1 (prompt principal)
+# \[\e[XXm\] = códigos de color ANSI
+# \u = nombre de usuario
+# \h = hostname (nombre del equipo)
+# \w = directorio de trabajo completo
+# \$ = símbolo $ (o # si eres root)
+# \[\e[00m\] = resetear color a default
+export PS1="\[\e[36m\]\$(parse_virtualenv)\[\e[32m\]\u@\h\[\e[00m\]:\[\e[34m\]\w\[\e[91m\]\$(parse_git_branch)\[\e[00m\]\$ "
